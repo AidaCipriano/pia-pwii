@@ -33,6 +33,10 @@ const MiPerfil = () => {
     });
   }, []);
 
+
+
+  
+
   return (
 
     <div>
@@ -69,9 +73,6 @@ const MiPerfil = () => {
 </div>
 
 </Container>
-{imageUrls.map((url) => {
-return <img src={url} />;
-})}
 
 </div>
 
