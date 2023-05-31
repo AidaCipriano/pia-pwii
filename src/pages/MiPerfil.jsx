@@ -3,87 +3,128 @@ import Container from 'react-bootstrap/Container';
 import Navigation from '../Components/NavigationLayout';
 import './Test.css'
 
-import { getFirestore, collection, updateDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import app from "../firebase"
-
-const db= getFirestore(app)
-const storage = getStorage(app)
+import { useState, useEffect } from "react";
+import {ref, uploadBytes, getDownloadURL, listAll, list,} from "firebase/storage";
+import { storage } from "../firebase";
+import { v4 } from "uuid";
 
 const MiPerfil = () => {
-  
-  let urlImDesc;
+  const [imageUpload, setImageUpload] = useState(null);
+  const [imageUrls, setImageUrls] = useState([]);
 
-    const guardarProductos = async(e)=>{
-      e.preventDefault()
-      const nombre = e.target.nombre.value;
-      const precio = e.target.precio.value;
+  const imagesListRef = ref(storage, "images/");
+  const uploadFile = () => {
+    if (imageUpload == null) return;
+    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setImageUrls((prev) => [...prev, url]);
+      });
+    });
+  };
 
-      const newProduct = {
-        nombre: nombre,
-        precio: precio,
-        imagen: urlImDesc
-      }
+  useEffect(() => {
+    listAll(imagesListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setImageUrls((prev) => [...prev, url]);
+        });
+      });
+    });
+  }, []);
 
-      try{
-        await updateDoc(collection(db, 'productos'), {
-            ...newProduct
-        })
-      } catch (error){
-         console.log(error);
-      }  
+  return (
 
-      e.target.nombre.value='';
-      e.target.precio.value='';
-      e.target.file.value='';
-  
-    }
+    <div>
+    <Navigation />
+    <Container> 
+    <div className='card card-body'>
+<h3 className='text-center'>Agregar Productos</h3>
+<form /*onSubmit={uploadFile}*/ >
+<label>Nombre: </label>
+<div className='form-group'>
+    <input type="text" placeholder='Ingresa el nombre del producto' id='nombre' className='form-control mt-1' required />
+</div>
 
-    const fileHandler = async(e)=>{
-      const archivoI = e.target.files[0];
-      const refArchivo = ref(storage, `documentos/${archivoI.name}`)
-      await uploadBytes(refArchivo, archivoI)
+<label>Precio: </label>
+<div className='form-group'>
+    <input type="text" placeholder='Ingresa el precio' id='precio' className='form-control mt-1' required />
+</div>
+<label>Agregar Imagen: </label>
 
-      urlImDesc = await getDownloadURL(refArchivo)
-    }
-    
-    
+
+
+<input
+        type="file"
+        onChange={(event) => {
+          setImageUpload(event.target.files[0]);
+        }}
+        className='form-control' />
+      <button  className='btn btn-primary mt-3 form-control'onClick={uploadFile}> Upload Image</button>
+
+
 
    
+</form>
+</div>
+
+</Container>
+{imageUrls.map((url) => {
+return <img src={url} />;
+})}
+
+</div>
 
 
+    
+  );
+}
 
-        return  (
-          
-            <div>
+export default MiPerfil;
+/*
+
+ <div>
               <Navigation />
               <Container> 
               <div className='card card-body'>
           <h3 className='text-center'>Agregar Productos</h3>
-          <form onSubmit={guardarProductos}>
-            <label>Nombre: </label>
-              <div className='form-group'>
-                  <input type="text" placeholder='Ingresa el nombre del producto' id='nombre' className='form-control mt-1' required />
-              </div>
+          <form /*onSubmit={uploadFile} >
+          <label>Nombre: </label>
+          <div className='form-group'>
+              <input type="text" placeholder='Ingresa el nombre del producto' id='nombre' className='form-control mt-1' required />
+          </div>
 
-              <label>Precio: </label>
-              <div className='form-group'>
-                  <input type="text" placeholder='Ingresa el precio' id='precio' className='form-control mt-1' required />
-              </div>
-            <label>Agregar Imagen: </label>
-            <input type="file" placeholder='Agregar imagen' id='file' className='form-control' onChange={fileHandler} />
-
-            <button className='btn btn-primary mt-3 form-control'>Guardar</button>
-          </form>
-      </div>
-              </Container>
-              </div>
+          <label>Precio: </label>
+          <div className='form-group'>
+              <input type="text" placeholder='Ingresa el precio' id='precio' className='form-control mt-1' required />
+          </div>
+        <label>Agregar Imagen: </label>
+       
+        <input  type="file" onChange={(event) => { setImageUpload(event.target.files[0]);  }}  className='form-control'/>
+        <button  className='btn btn-primary mt-3 form-control' onClick={uploadFile}> Guardar</button>
         
-              )
-            
-      
-    
+      </form>
+  </div>
+     
+          </Container>
+         {imageUrls.map((url) => {
+          return <img src={url} />;
+        })}
+          
+          </div>
 
-}
 
-export default MiPerfil;
+          <div className="App">
+      <input
+        type="file"
+        onChange={(event) => {
+          setImageUpload(event.target.files[0]);
+        }}
+      />
+      <button onClick={uploadFile}> Upload Image</button>
+      {imageUrls.map((url) => {
+        return <img src={url} />;
+      })}
+    </div>
+
+*/ 
