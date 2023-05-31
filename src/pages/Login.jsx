@@ -8,7 +8,7 @@ import { disconnectSocket } from '../SocketService'
 import swal from 'sweetalert2';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, storage, db } from "../firebase";
-import ElTims from '../imgs/ElTims.png';
+import Aetna from '../imgs/Aetna.png';
 
 
 const Login = () => {
@@ -66,8 +66,8 @@ const Login = () => {
             <div className="card-body p-5 text-center">
 
                  <div className="mb-md-5 mt-md-4 pb-5">
-                 <img alt="LogoFCFM" src={ElTims}width="150" height="150"></img>
-                 <h1 className="fw-italic mb-0">El Tims</h1>
+                 <img alt="LogoFCFM" src={Aetna}width="150" height="150"></img>
+                 <h1 className="fw-italic mb-0">Aetna</h1>
                  <br></br>
                   <form onSubmit={handleSubmitFirebase} noValidate sx={{ mt: 1 }}>
                      

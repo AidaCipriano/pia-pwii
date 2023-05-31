@@ -10,7 +10,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db, storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc,  setDoc } from "firebase/firestore";
-import ElTims from '../imgs/ElTims.png';
+import Aetna from '../imgs/Aetna.png';
 
 const Signup = () => {
   const [err, setErr] = React.useState(false);
@@ -109,8 +109,8 @@ const Signup = () => {
               <div className="card-body p-5 text-center">
 
                 <div className="mb-md-5 mt-md-4 pb-5">
-                <img alt="Registrate" src={ElTims}width="150" height="150"></img>
-                <h1 className="fw-italic mb-0">El Tims</h1>
+                <img alt="Registrate" src={Aetna}width="150" height="150"></img>
+                <h1 className="fw-italic mb-0">Aetna</h1>
                 <br></br>
                   <form onSubmit={handleSubmitFirebase} noValidate sx={{ mt: 1 }}>
                   <h2 className="fw-bold mb-2 ">Registrate</h2>

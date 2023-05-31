@@ -19,16 +19,7 @@ export const MessageGroup = ({ message }) => {
       ref.current?.scrollIntoView({ behavior: "smooth" });
     }, [message]);
   
-    const descifrar = (texto) => {
-      var bytes = CryptoJS.AES.decrypt(texto, "poi");
-      var textoDescifrado = bytes.toString(CryptoJS.enc.Latin1);
-  
-      if (textoDescifrado) {
-          return textoDescifrado;
-      } else {
-          return texto;
-      }
-    }
+
   
     const date = new Date(message.date?.seconds*1000);
   const options = { 

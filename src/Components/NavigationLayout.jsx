@@ -6,7 +6,7 @@ import { useAuth } from "../Hooks/UseAuth";
 import { useNavigate } from "react-router-dom";
 import { signOut } from 'firebase/auth';
 import { auth } from "../firebase";
-import Bisonte from '../imgs/ElTims.png';
+import Aetna from '../imgs/Aetna.png';
 import './NavigationLayout.css';
 //import Chats from '.../pages/Chats';
 
@@ -23,13 +23,13 @@ function Navigation() {
       <Container>
       <Navbar.Brand href="#home">
             <img
-              src={Bisonte}
+              src={Aetna}
               width="30"
               height="30"
               className="d-inline-block align-top"
               alt="React Bootstrap logo"
             />
-              El Tims
+              Aetna
           </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
